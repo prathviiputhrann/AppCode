@@ -37,7 +37,7 @@ jobs:
             sed -i "s/build-.*/build-$TAG/g" manifest/deployment.yaml
             cat manifest/deployment.yaml
             git add .
-            git commit -m "new build with imgTag build-$TAG"
+            git commit -m "new build has been added with imgTag build-$TAG"
             git config credential.helper 'cache --timeout=120'
             git push -q https://$GITHUB_PERSONAL_TOKEN@github.com/prathviiputhrann/kube_manifest.git main 
 workflows:
