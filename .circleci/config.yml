@@ -7,15 +7,19 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Lets build and push image
+          name: Build Docker Image
           command: |
-            version="build-$CIRCLE_BUILD_NUM"
-            echo $version
-            docker build -t prathvipp/todo-app:$version .
-            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push prathvipp/todo-app:$version
+            docker build --build-arg NPM_TOKEN=$NPM_TOKEN -t prathvipp/todo-app:$CIRCLE_BUILD_NUM .
+      - run:
+          name: Docker Login
+          command: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      - run:
+          name: Push Docker Image
+          command: docker push prathvipp/todo-app:$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build_and_push:
     jobs:
       - build_and_push
+contexts:
+  - docker-context
